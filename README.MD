@@ -16,6 +16,11 @@ Live: <https://murf-y.github.io/npc_map/>
 
 4. Size: Larger means higher degree (out + in)
 
+## TODO
+
+1. Add more problems
+2. Add reduction decription (hovering over an edge)
+
 ## Contribution
 
 Feel free to add new problems with their description and reductions.
