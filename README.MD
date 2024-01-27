@@ -2,6 +2,8 @@
 
 Network of some NPC problem with edges indicating that we know the reduction from source to target problem.
 
+Live: <https://murf-y.github.io/npc_map/>
+
 ---
 
 ## Features
