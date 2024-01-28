@@ -37,37 +37,53 @@ PROBLEMS["TSP"] = NPC_Problem(
     "TSP", "Given a graph and a number k, is there a tour of length <= k?")
 PROBLEMS["SS"] = NPC_Problem(
     "SS", "Given a Set S, and collection C of subsets of S. Can we partition S into s1, s2 s.t. no element in C is entirely in s1 or s2")
+PROBLEMS["HP"] = NPC_Problem(
+    "HAMILTONIAN_PATH", "Given a graph, is there a PATH that visits every vertex exactly once?")
 
 
 def get_reductions():
     reductions = []
 
     reductions.append(Reduction(PROBLEMS["SAT"], PROBLEMS["3SAT"]))
-    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["SAT"]))
     reductions.append(Reduction(PROBLEMS["SAT"], PROBLEMS["CLIQUE"]))
-    reductions.append(Reduction(PROBLEMS["SAT"], PROBLEMS["VC"]))
     reductions.append(Reduction(PROBLEMS["SAT"], PROBLEMS["IS"]))
+    reductions.append(Reduction(PROBLEMS["SAT"], PROBLEMS["3COL"]))
+    reductions.append(Reduction(PROBLEMS["SAT"], PROBLEMS["HC"]))
+    reductions.append(Reduction(PROBLEMS["SAT"], PROBLEMS["SC"]))
+
+    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["CLIQUE"]))
+    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["SAT"]))
+    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["VC"]))
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["IS"]))
+    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["SS"]))
+    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["DS"]))
+
     reductions.append(Reduction(PROBLEMS["CLIQUE"], PROBLEMS["IS"]))
+    reductions.append(Reduction(PROBLEMS["CLIQUE"], PROBLEMS["VC"]))
+
     reductions.append(Reduction(PROBLEMS["IS"], PROBLEMS["CLIQUE"]))
     reductions.append(Reduction(PROBLEMS["IS"], PROBLEMS["VC"]))
-    reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["IS"]))
     reductions.append(Reduction(PROBLEMS["IS"], PROBLEMS["DS"]))
-    reductions.append(Reduction(PROBLEMS["DS"], PROBLEMS["IS"]))
-    reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["DS"]))
-    reductions.append(Reduction(PROBLEMS["DS"], PROBLEMS["VC"]))
-    reductions.append(Reduction(PROBLEMS["CLIQUE"], PROBLEMS["VC"]))
+
+    reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["IS"]))
     reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["CLIQUE"]))
+    reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["HC"]))
+    reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["DS"]))
     reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["SC"]))
-    reductions.append(Reduction(PROBLEMS["SC"], PROBLEMS["VC"]))
-    reductions.append(Reduction(PROBLEMS["SAT"], PROBLEMS["3COL"]))
-    reductions.append(Reduction(PROBLEMS["3COL"], PROBLEMS["7COL"]))
-    reductions.append(Reduction(PROBLEMS["SAT"], PROBLEMS["HC"]))
-    reductions.append(Reduction(PROBLEMS["HC"], PROBLEMS["TSP"]))
-    reductions.append(Reduction(PROBLEMS["TSP"], PROBLEMS["HC"]))
-    reductions.append(Reduction(PROBLEMS["SAT"], PROBLEMS["SS"]))
-    reductions.append(Reduction(PROBLEMS["SAT"], PROBLEMS["SC"]))
-    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["DS"]))
+
+    reductions.append(Reduction(PROBLEMS["DS"], PROBLEMS["IS"]))
+    reductions.append(Reduction(PROBLEMS["DS"], PROBLEMS["VC"]))
     reductions.append(Reduction(PROBLEMS["DS"], PROBLEMS["3SAT"]))
+
+    reductions.append(Reduction(PROBLEMS["SC"], PROBLEMS["VC"]))
+
+    reductions.append(Reduction(PROBLEMS["3COL"], PROBLEMS["7COL"]))
+
+    reductions.append(Reduction(PROBLEMS["HC"], PROBLEMS["TSP"]))
+    reductions.append(Reduction(PROBLEMS["HC"], PROBLEMS["HP"]))
+
+    reductions.append(Reduction(PROBLEMS["TSP"], PROBLEMS["HC"]))
+
+    reductions.append(Reduction(PROBLEMS["HP"], PROBLEMS["HC"]))
 
     return reductions
