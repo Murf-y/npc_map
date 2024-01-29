@@ -38,7 +38,7 @@ PROBLEMS["TSP"] = NPC_Problem(
 PROBLEMS["SS"] = NPC_Problem(
     "SS", "Given a Set S, and collection C of subsets of S. Can we partition S into s1, s2 s.t. no element in C is entirely in s1 or s2")
 PROBLEMS["HP"] = NPC_Problem(
-    "HAMILTONIAN_PATH", "Given a graph, is there a PATH that visits every vertex exactly once?")
+    "HP", "Given a graph, is there a PATH that visits every vertex exactly once?")
 
 
 def get_reductions():
