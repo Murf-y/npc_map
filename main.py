@@ -13,13 +13,11 @@ def main():
         npc_map.add_edge(
             reduction.source, reduction.target, description=reduction.description)
     net = pyvis.network.Network(notebook=True, cdn_resources='remote', directed=True,
-                                height="1000px", width="100%", bgcolor="#e8f1ff", font_color="#000c1f")
-    net.force_atlas_2based()
-    degree_cent = nx.katz_centrality(npc_map)
-    closeness_cent = nx.closeness_centrality(npc_map)
+                                height="1080px", width="100%", bgcolor="#e8f1ff", font_color="#000c1f")
 
-    best_closeness = max(closeness_cent.values())
-    worst_closeness = min(closeness_cent.values())
+    net.force_atlas_2based(overlap=1)
+    # calculate the degree centrality of the nodes outdegree + indegree
+    degree_cent = nx.degree_centrality(npc_map)
 
     max_size = 30
     min_size = 5
@@ -35,14 +33,16 @@ def main():
 
     for i, node in enumerate(npc_map.nodes):
         node_color_based_on_weight = matplotlib.colors.to_hex(plt.cm.Blues(
-            (closeness_cent[node] - worst_closeness) / (best_closeness - worst_closeness), 1))
-        net.add_node(node.name, label=f"{node.name}", title=f"{node.descirption} | Closeness={closeness_cent[node]:.2f} | Degree={degree_cent[node]:.2f}",
+            (degree_cent[node] - min_centrality) / (max_centrality - min_centrality), 1))
+
+        net.add_node(node.name, label=f"{node.name}", title=f"{node.descirption} | Degree={degree_cent[node]:.2f}",
                      size=min_size + (max_size - min_size) * (degree_cent[node] - min_centrality) / (max_centrality - min_centrality), color=node_color_based_on_weight)
 
     for edge in npc_map.edges:
         net.add_edge(edge[0].name, edge[1].name,
                      title=npc_map.edges[edge]["description"])
 
+    print("===> Saving to index.html")
     net.show("index.html")
 
 
