@@ -81,7 +81,8 @@ def get_reductions():
     reductions = []
 
     reductions.append(Reduction(PROBLEMS["SAT"], PROBLEMS["3SAT"]))
-    reductions.append(Reduction(PROBLEMS["SAT"], PROBLEMS["CLIQUE"]))
+    reductions.append(Reduction(
+        PROBLEMS["SAT"], PROBLEMS["CLIQUE"], description="For each clause, place every literal as a node, after placing all literals, go through each clause for each literal node connect it to all other literal node in OTHER clauses such that they are not the opposite literal. Set K to the number of clauses."))
 
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["CLIQUE"]))
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["3COL"]))
@@ -93,10 +94,12 @@ def get_reductions():
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["HC"]))
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["HP"]))
 
-    reductions.append(Reduction(PROBLEMS["CLIQUE"], PROBLEMS["IS"]))
+    reductions.append(Reduction(PROBLEMS["CLIQUE"], PROBLEMS["IS"],
+                      description="Complement the graph and set new K = old K, the clique will become IS"))
     reductions.append(Reduction(PROBLEMS["CLIQUE"], PROBLEMS["VC"]))
 
-    reductions.append(Reduction(PROBLEMS["IS"], PROBLEMS["CLIQUE"]))
+    reductions.append(Reduction(PROBLEMS["IS"], PROBLEMS["CLIQUE"],
+                      description="Complement the graph and set new K = old K, the IS will become clique"))
     reductions.append(Reduction(PROBLEMS["IS"], PROBLEMS["VC"]))
     reductions.append(Reduction(PROBLEMS["IS"], PROBLEMS["SETPACKING"]))
     reductions.append(Reduction(PROBLEMS["IS"], PROBLEMS["DS"]))
