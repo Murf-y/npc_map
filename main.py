@@ -15,7 +15,8 @@ def main():
     net = pyvis.network.Network(notebook=True, cdn_resources='remote', directed=True,
                                 height="100%", width="100%", bgcolor="#e8f1ff", font_color="#000c1f")
 
-    net.force_atlas_2based(overlap=1)
+    net.force_atlas_2based(damping=1)
+    net.toggle_stabilization(False)
     # calculate the degree centrality of the nodes outdegree + indegree
     degree_cent = nx.degree_centrality(npc_map)
 

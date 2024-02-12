@@ -317,16 +317,16 @@ function highlightFilter(filter) {
     "physics": {
         "enabled": true,
         "forceAtlas2Based": {
-            "avoidOverlap": 1,
+            "avoidOverlap": 0,
             "centralGravity": 0.01,
-            "damping": 0.4,
+            "damping": 1,
             "gravitationalConstant": -50,
             "springConstant": 0.08,
             "springLength": 100
         },
         "solver": "forceAtlas2Based",
         "stabilization": {
-            "enabled": true,
+            "enabled": false,
             "fit": true,
             "iterations": 1000,
             "onlyDynamicEdges": false,
