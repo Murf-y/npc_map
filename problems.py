@@ -141,12 +141,14 @@ def get_reductions():
     reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["HC"]))
     reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["HP"]))
     reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["DS"]))
-    reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["SC"]))
+    reductions.append(Reduction(
+        PROBLEMS["VC"], PROBLEMS["SC"], description="S=E, for each vertex v in G, create a set Sv such that it contains all edges that are incident to v, set K = k, the sets of the vertex cover verticies will be the solution of the set cover"))
 
     reductions.append(Reduction(PROBLEMS["DS"], PROBLEMS["IS"]))
     reductions.append(Reduction(PROBLEMS["DS"], PROBLEMS["VC"]))
 
-    reductions.append(Reduction(PROBLEMS["SC"], PROBLEMS["VC"]))
+    reductions.append(
+        Reduction(PROBLEMS["SC"], PROBLEMS["VC"], description=""))
 
     reductions.append(Reduction(PROBLEMS["3COL"], PROBLEMS["7COL"]))
     reductions.append(Reduction(PROBLEMS["3COL"], PROBLEMS["CLIQUE"]))

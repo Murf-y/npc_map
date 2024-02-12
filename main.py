@@ -13,7 +13,7 @@ def main():
         npc_map.add_edge(
             reduction.source, reduction.target, description=reduction.description)
     net = pyvis.network.Network(notebook=True, cdn_resources='remote', directed=True,
-                                height="1080px", width="100%", bgcolor="#e8f1ff", font_color="#000c1f")
+                                height="100%", width="100%", bgcolor="#e8f1ff", font_color="#000c1f")
 
     net.force_atlas_2based(overlap=1)
     # calculate the degree centrality of the nodes outdegree + indegree
@@ -44,6 +44,20 @@ def main():
 
     print("===> Saving to index.html")
     net.show("index.html")
+
+    with open("index.html", "r") as file:
+        data = file.readlines()
+    with open("index.html", "w") as file:
+        for line in data:
+            if '<meta charset="utf-8">' in line:
+                file.write(line)
+                file.write(
+                    '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n')
+                file.write(
+                    '<link rel="stylesheet" href="index.css">\n')
+            else:
+                file.write(line)
+    print("===> Modified index.html")
 
 
 if __name__ == "__main__":
