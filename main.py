@@ -25,12 +25,6 @@ def main():
     max_centrality = max(degree_cent.values())
     min_centrality = min(degree_cent.values())
 
-    net.add_node("Size", label="Size", title="Node size ~ Degree",
-                 size=15, color="#348feb", physics=False, x=-1000, y=-300)
-    # node that say that the color of the node is the weight value
-    net.add_node("Color", label="Color", title="Node color ~ Closeness",
-                 size=15, color="#348feb", physics=False, x=-1000, y=-200)
-
     for i, node in enumerate(npc_map.nodes):
         node_color_based_on_weight = matplotlib.colors.to_hex(plt.cm.Blues(
             (degree_cent[node] - min_centrality) / (max_centrality - min_centrality), 1))
