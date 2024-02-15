@@ -110,7 +110,13 @@ def get_reductions():
                       description="Complement the graph and set new K = old K, the clique will become IS"))
     reductions.append(Reduction(PROBLEMS["CLIQUE"], PROBLEMS["VC"],
                       description="Complement the graph and set new K = V - old K"))
-    reductions.append(Reduction(PROBLEMS["CLIQUE"], PROBLEMS["SAT"]))
+    reductions.append(Reduction(PROBLEMS["CLIQUE"], PROBLEMS["SAT"], description="""
+                                Variables: yi,r (true if node i is the rth node of the clique) for 1 ≤ i ≤ n, 1 ≤ r ≤ k.
+                                Create the following clauses:
+                                For each r, y(1,r) OR y(2,r) OR .. OR y(n,r) (some node is the rth node of the clique).
+                                For each i,r<s not y(i,r) OR not y(i,s) (no node is both the rth and sth node of clique).
+                                For each r ≠ s and i < j such that (i,j) is not and edge of G, add  not y(i,r) OR not y(i,s) (if theres no edge from i to j, then nodes i and j cannot both be in the clique).
+                                """))
 
     # =================================================================================================
     reductions.append(Reduction(PROBLEMS["IS"], PROBLEMS["CLIQUE"],
@@ -157,7 +163,8 @@ def get_reductions():
     reductions.append(Reduction(PROBLEMS["DS"], PROBLEMS["VC"]))
     # =================================================================================================
 
-    reductions.append(Reduction(PROBLEMS["3COL"], PROBLEMS["7COL"]))
+    reductions.append(Reduction(PROBLEMS["3COL"], PROBLEMS["7COL"],
+                      description="Add 4 verticies connected to all nodes, this will ensure the graph is 7col iff it was 3 col"))
     reductions.append(Reduction(
         PROBLEMS["3COL"], PROBLEMS["CLIQUE"], description="3COL -> SAT -> CLIQUE"))
     reductions.append(Reduction(PROBLEMS["3COL"], PROBLEMS["SAT"], description="For each vertex u in G, create 3 variables Ru Gu Bu , each represents the color of the vertex u (if u is red <=> Ru = 1, else Ru = 0), for each vertex create clauses (Ru or Gu or Bu) and (not Ru or not Gu) and (not Ru or not Bu) and (not Gu or not Bu) this ensures that u has exactly 1 color, then for each edge (u, v) create clauses (not Ru or not Rv) and (not Gu or not Gv) and (not Bu or not Bv) this ensures that u and v have different colors"))
