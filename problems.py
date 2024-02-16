@@ -47,7 +47,7 @@ PROBLEMS["TSP"] = NPC_Problem(
     "TSP", "Given a graph and a number k, is there a tour of length <= k?")
 
 PROBLEMS["HP"] = NPC_Problem(
-    "HP", "Given a graph, is there a PATH that visits every vertex exactly once?")
+    "HP", "Given a graph, start vertex, and target vertex, is there a PATH that visits every vertex exactly once starting from start and ending at target?")
 
 PROBLEMS["EDGECOVER"] = NPC_Problem(
     "EDGE COVER", "Given a graph and k, does there exists a set of edges such that every vertex of the graph is incident to at least one edge of the set, with size <= k")
@@ -94,11 +94,13 @@ def get_reductions():
     # =================================================================================================
     reductions.append(Reduction(
         PROBLEMS["3SAT"], PROBLEMS["CLIQUE"], description="Same as SAT to Clique"))
-    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["3COL"]))
+    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["3COL"], description="Create variable gadget to ensure each variable is assigned a value different from its opposite literal, then connect each variable gadget to the clause gadgets (x or y or z) create triangle connect x and y to a side of it, then feed the top of it into the left of another triangle whose right is z and its tip is a True node (green)"))
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["VC"], description="For each clause create a triangle formed by its literals as nodes (clause gadget), for each VARIABLE add the literal and its negation (variable gadget) as nodes and connect them,\n go over each variable gadget and connect each literal to the same literal node in the clauses gadgets (crossing edges), set K = 2m + n"))
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["IS"], description="3SAT -> VC -> IS OR 3SAT -> Clique -> IS i.e. For each clause create a triangle formed by its literals as nodes (clause gadget), for each VARIABLE add the literal and its negation (variable gadget) as nodes and connect them,\n go over each variable gadget and connect each literal to the same literal node in the clauses gadgets (crossing edges), set K = m + n"))
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["SUBSETSUM"]))
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["SETSPLITTING"]))
+    reductions.append(Reduction(
+        PROBLEMS["3SAT"], PROBLEMS["SC"], description="3SAT -> VC -> SC"))
     reductions.append(Reduction(
         PROBLEMS["3SAT"], PROBLEMS["SETPACKING"], description="3SAT -> IS -> SETPACKING"))
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["DS"]))
@@ -169,14 +171,14 @@ def get_reductions():
         PROBLEMS["3COL"], PROBLEMS["CLIQUE"], description="3COL -> SAT -> CLIQUE"))
     reductions.append(Reduction(PROBLEMS["3COL"], PROBLEMS["SAT"], description="For each vertex u in G, create 3 variables Ru Gu Bu , each represents the color of the vertex u (if u is red <=> Ru = 1, else Ru = 0), for each vertex create clauses (Ru or Gu or Bu) and (not Ru or not Gu) and (not Ru or not Bu) and (not Gu or not Bu) this ensures that u has exactly 1 color, then for each edge (u, v) create clauses (not Ru or not Rv) and (not Gu or not Gv) and (not Bu or not Bv) this ensures that u and v have different colors"))
     reductions.append(Reduction(
-        PROBLEMS["3COL"], PROBLEMS["IS"]))
+        PROBLEMS["3COL"], PROBLEMS["IS"], description="3COL -> SAT -> 3SAT -> IS"))
     reductions.append(Reduction(
-        PROBLEMS["3COL"], PROBLEMS["VC"]))
+        PROBLEMS["3COL"], PROBLEMS["VC"], description="3COL -> SAT -> 3SAT -> VC"))
     # =================================================================================================
 
     reductions.append(Reduction(
         PROBLEMS["HC"], PROBLEMS["TSP"], description="For each edge in the graph set the weight to 1, add all missing edges with weight 2, set K = number of vertices"))
-    reductions.append(Reduction(PROBLEMS["HC"], PROBLEMS["HP"]))
+    reductions.append(Reduction(PROBLEMS["HC"], PROBLEMS["HP"], description="Pick vertex V, add a vertex V' and copy all edges from v to v', then add vertex Start connected to V and vertex Target connected to V', there should exists a hamiltonian path from start to target iff there exists a hamiltonian cycle"))
     reductions.append(
         Reduction(PROBLEMS["HC"], PROBLEMS["SUBISO"], description="""
                   Keep it as is. A Hamiltonian cycle in a graph is a cycle that includes every vertex, so if we ignore the other edges in the graph,\n
@@ -188,7 +190,8 @@ def get_reductions():
     reductions.append(Reduction(PROBLEMS["TSP"], PROBLEMS["HC"]))
     # =================================================================================================
 
-    reductions.append(Reduction(PROBLEMS["HP"], PROBLEMS["HC"]))
+    reductions.append(Reduction(
+        PROBLEMS["HP"], PROBLEMS["HC"], description="Add new vertex U and connect it to start and target, if there exists a hamiltonian path in original graph from start to target then there exists a hamiltonian cycle (passing by U)"))
     # =================================================================================================
 
     return reductions
