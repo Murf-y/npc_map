@@ -29,7 +29,7 @@ PROBLEMS["IS"] = NPC_Problem(
     "IS", "Given a graph and a number k, is there an independent set (no vertex is adj) >= k")
 
 PROBLEMS["DS"] = NPC_Problem(
-    "DS", "Given a graph and a number k, is there a dominating set (touch all vert by including it or an adj vert) <= k")
+    "DS", "Given a graph and a number k, is there a dominating set (set of vert that touch all vert by including it or an adj vert) <= k")
 
 PROBLEMS["3COL"] = NPC_Problem(
     "3COL", "Given a graph, can it be colored with 3 colors (no adj vert have same color)?")
@@ -97,15 +97,16 @@ def get_reductions():
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["3COL"], description="Create variable gadget to ensure each variable is assigned a value different from its opposite literal, then connect each variable gadget to the clause gadgets (x or y or z) create triangle connect x and y to a side of it, then feed the top of it into the left of another triangle whose right is z and its tip is a True node (green)"))
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["VC"], description="For each clause create a triangle formed by its literals as nodes (clause gadget), for each VARIABLE add the literal and its negation (variable gadget) as nodes and connect them,\n go over each variable gadget and connect each literal to the same literal node in the clauses gadgets (crossing edges), set K = 2m + n"))
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["IS"], description="3SAT -> VC -> IS OR 3SAT -> Clique -> IS i.e. For each clause create a triangle formed by its literals as nodes (clause gadget), for each VARIABLE add the literal and its negation (variable gadget) as nodes and connect them,\n go over each variable gadget and connect each literal to the same literal node in the clauses gadgets (crossing edges), set K = m + n"))
-    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["SUBSETSUM"]))
+    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["SUBSETSUM"], description="Given n variables and m clauses, For each variable xi you will have a TWO numbers Ai and Bi formed of n+m digits, Ai = 10^(m+i)  + Sum(10^j for each clause Cj that contains xi) and Bi = 10^(m+i) + Sum(10^j for each clause Cj that contains not xi), then for each clause Cj add two numbers Sj and Tj each consists of n + m digits, Sj = Tj = 10^(j-1), set K a number of n+m digits, then n digits are all 1s and m digits are all 3s, you cannot pick Ai and Bi because the 1s in K will not work, and u have to pick at least one Ai or Bi so the column add up to 3"))
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["SETSPLITTING"]))
     reductions.append(Reduction(
         PROBLEMS["3SAT"], PROBLEMS["SC"], description="3SAT -> VC -> SC"))
     reductions.append(Reduction(
         PROBLEMS["3SAT"], PROBLEMS["SETPACKING"], description="3SAT -> IS -> SETPACKING"))
-    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["DS"]))
-    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["HC"]))
-    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["HP"]))
+    reductions.append(
+        Reduction(PROBLEMS["3SAT"], PROBLEMS["DS"], description="3SAT -> VC -> DS"))
+    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["DHC"],
+                      description="For each variable xi create a Pi with 2*m verticies {v(i,1)...v(i,2k)}, for each Pi connect from left to right (vi,j -> vi,j+1), then from right to left(vi,j+1 -> vi,j), then connect each start of Pi to start of next Pi, and each end of Pi to end of next Pi, and start of Pi to end of next Pi, and end of Pi to start of next Pi, Place node S and T, connect S to start of P1 and end of P1, connect T to start of Pn and end of Pn, connect T to S, for each clause Cj add node Cj then for each variable if it is xi , connect V(i,2j-1) to Cj and Cj to V(i,2j), if it is not xi connect V(i,2j) to Cj and Cj to V(i,2j-1), we create 2^n hamiltonian cycles corresponding to every possible assignment of the variables"))
 
     # =================================================================================================
     reductions.append(Reduction(PROBLEMS["CLIQUE"], PROBLEMS["IS"],
@@ -127,7 +128,8 @@ def get_reductions():
         PROBLEMS["IS"], PROBLEMS["VC"], description="The IS of size K will become VC of size V - K"))
     reductions.append(Reduction(PROBLEMS["IS"], PROBLEMS["SETPACKING"],
                       description="S=E, for each vertex v in G, create a set Sv such that it contains all edges that are incident to v, set K = k, the sets of the IS verticies will be the solution of the set packing"))
-    reductions.append(Reduction(PROBLEMS["IS"], PROBLEMS["DS"]))
+    reductions.append(
+        Reduction(PROBLEMS["IS"], PROBLEMS["DS"], description="IS -> VC -> DS"))
 
     # =================================================================================================
     reductions.append(
@@ -154,15 +156,20 @@ def get_reductions():
     reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["CLIQUE"],
                       description="Complement the graph and set new K = V - old K"))
     reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["SUBSETSUM"]))
-    reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["HC"]))
-    reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["HP"]))
-    reductions.append(Reduction(PROBLEMS["VC"], PROBLEMS["DS"]))
+    reductions.append(Reduction(
+        PROBLEMS["VC"], PROBLEMS["HC"], description="Pretty long reduction, general idea is create edge (u,v) gadget that have 3 way to pass through it corresponding to picking u, v, or both"))
+    reductions.append(
+        Reduction(PROBLEMS["VC"], PROBLEMS["HP"], description="VC -> HC -> HP"))
+    reductions.append(Reduction(
+        PROBLEMS["VC"], PROBLEMS["DS"], description="Create new graph G' with same vert and edges, then for each edge (u,v) create a new node uv and connect it to u and v, set new K = old k, the vertex cover in G is a dominating set in G'"))
     reductions.append(Reduction(
         PROBLEMS["VC"], PROBLEMS["SC"], description="S=E, for each vertex v in G, create a set Sv such that it contains all edges that are incident to v, set K = k, the sets of the vertex cover verticies will be the solution of the set cover"))
     # =================================================================================================
 
-    reductions.append(Reduction(PROBLEMS["DS"], PROBLEMS["IS"]))
-    reductions.append(Reduction(PROBLEMS["DS"], PROBLEMS["VC"]))
+    reductions.append(
+        Reduction(PROBLEMS["DS"], PROBLEMS["IS"], description="DS -> VC -> IS"))
+    reductions.append(
+        Reduction(PROBLEMS["DS"], PROBLEMS["VC"], description="Assume original graph G = (V,E) with V = {1...n}, create new graph G', add n new verticies U1...Un (degree zero), for each Ui add n verticies V(i,j) and connect them to form a clique of size n, then for each vertex Ui connect it to V(i,i), then for each vertex Ui connect it to V(j, i) if (i,j) is an edge in original graph, then for each edge (i, j) missing from E add vertex V'(i,j) and connect it to V(i, j), set new K = n*(n-1) + k"))
     # =================================================================================================
 
     reductions.append(Reduction(PROBLEMS["3COL"], PROBLEMS["7COL"],
@@ -185,9 +192,7 @@ def get_reductions():
                   we can think of the Hamiltonian cycle as a subgraph of the original graph with the properties that it contains all the vertices,\n
                   only some of the edges, and those edges make a cycle. That is, a Hamiltonian cycle in an n-vertex is isomorphic to the graph Cycle-n.
                   """))
-    # =================================================================================================
 
-    reductions.append(Reduction(PROBLEMS["TSP"], PROBLEMS["HC"]))
     # =================================================================================================
 
     reductions.append(Reduction(
