@@ -87,7 +87,7 @@ def get_reductions():
     reductions.append(Reduction(PROBLEMS["SAT"], PROBLEMS["3SAT"], description="""For each clause C in SAT, if it contains 1 variable X1, add 2 new variables Z1 and Z2 and create 4 clauses with all combination of Z1 and Z2 or X1.\n
                                 If it contains 2 variables X1, X2, add 1 new variable Z1 and create 2 clauses X1 or X2 or Z1, X1 or X2 or not Z1.\n
                                 If it contains 3 variables leave it as is.\n
-                                If it contains n>=4 add n-2 variables, in first clause add Zi, in the subsequent clause add not Zi or X or Zi+1, ...., in the last clause add not Zn-2 or Xn-1 or Xn"""))
+                                If it contains n>=4 add n-3 variables, in first clause add Zi, in the subsequent clause add not Zi or X or Zi+1, ...., in the last clause add not Zn-2 or Xn-1 or Xn"""))
     reductions.append(Reduction(
         PROBLEMS["SAT"], PROBLEMS["CLIQUE"], description="For each clause, place every literal as a node, after placing all literals, go through each clause for each literal node connect it to all other literal node in OTHER clauses such that they are not the opposite literal. Set K to the number of clauses."))
 
