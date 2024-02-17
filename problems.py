@@ -98,7 +98,8 @@ def get_reductions():
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["VC"], description="For each clause create a triangle formed by its literals as nodes (clause gadget), for each VARIABLE add the literal and its negation (variable gadget) as nodes and connect them,\n go over each variable gadget and connect each literal to the same literal node in the clauses gadgets (crossing edges), set K = 2m + n"))
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["IS"], description="3SAT -> VC -> IS OR 3SAT -> Clique -> IS i.e. For each clause create a triangle formed by its literals as nodes (clause gadget), for each VARIABLE add the literal and its negation (variable gadget) as nodes and connect them,\n go over each variable gadget and connect each literal to the same literal node in the clauses gadgets (crossing edges), set K = m + n"))
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["SUBSETSUM"], description="Given n variables and m clauses, For each variable xi you will have a TWO numbers Ai and Bi formed of n+m digits, Ai = 10^(m+i)  + Sum(10^j for each clause Cj that contains xi) and Bi = 10^(m+i) + Sum(10^j for each clause Cj that contains not xi), then for each clause Cj add two numbers Sj and Tj each consists of n + m digits, Sj = Tj = 10^(j-1), set K a number of n+m digits, then n digits are all 1s and m digits are all 3s, you cannot pick Ai and Bi because the 1s in K will not work, and u have to pick at least one Ai or Bi so the column add up to 3"))
-    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["SETSPLITTING"]))
+    reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["SETSPLITTING"],
+                      description="Create set S, for each literal add it to S, then add F (indicate false), for each variable Xi create a set in C {Xi, not Xi}, for each clause create a set in C it have the literals of clause in it + F, the partition of S into S1={set of true literals} and S2={set of false literals + F} will be the solution of the set splitting"))
     reductions.append(Reduction(
         PROBLEMS["3SAT"], PROBLEMS["SC"], description="3SAT -> VC -> SC"))
     reductions.append(Reduction(
@@ -120,6 +121,8 @@ def get_reductions():
                                 For each i,r<s not y(i,r) OR not y(i,s) (no node is both the rth and sth node of clique).
                                 For each r ≠ s and i < j such that (i,j) is not and edge of G, add  not y(i,r) OR not y(i,s) (if theres no edge from i to j, then nodes i and j cannot both be in the clique).
                                 """))
+    reductions.append(Reduction(PROBLEMS["CLIQUE"], PROBLEMS["SUBISO"],
+                      description="Set G1=original graph, G2= k-clique, if G1 has a k-clique then it is isomorphic to G2"))
 
     # =================================================================================================
     reductions.append(Reduction(PROBLEMS["IS"], PROBLEMS["CLIQUE"],
