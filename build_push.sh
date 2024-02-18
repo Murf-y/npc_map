@@ -1,5 +1,7 @@
 # This script would build the project and add-commit-push the changes to the remote repository
 
+python -m pip install --upgrade pip
+
 pip install -r requirements.txt
 
 python3 main.py
