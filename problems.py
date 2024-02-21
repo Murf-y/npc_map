@@ -105,7 +105,7 @@ def get_reductions():
     reductions.append(Reduction(
         PROBLEMS["3SAT"], PROBLEMS["SETPACKING"], description="3SAT -> IS -> SETPACKING"))
     reductions.append(
-        Reduction(PROBLEMS["3SAT"], PROBLEMS["DS"], description="3SAT -> VC -> DS"))
+        Reduction(PROBLEMS["3SAT"], PROBLEMS["DS"], description="3SAT -> VC -> DS || Create literal gadget, formed by xi conencted to not xi and an extra node that connected to xi and to not xi (this ensure that we pick at least one literarl), then we add for each clause a node Cj, we connect Cj with every literal node that occurs in it, set K = n, we pick the nodes that are true in assignment"))
     reductions.append(Reduction(PROBLEMS["3SAT"], PROBLEMS["DHC"],
                       description="For each variable xi create a Pi with 2*m verticies {v(i,1)...v(i,2k)}, for each Pi connect from left to right (vi,j -> vi,j+1), then from right to left(vi,j+1 -> vi,j), then connect each start of Pi to start of next Pi, and each end of Pi to end of next Pi, and start of Pi to end of next Pi, and end of Pi to start of next Pi, Place node S and T, connect S to start of P1 and end of P1, connect T to start of Pn and end of Pn, connect T to S, for each clause Cj add node Cj then for each variable if it is xi , connect V(i,2j-1) to Cj and Cj to V(i,2j), if it is not xi connect V(i,2j) to Cj and Cj to V(i,2j-1), we create 2^n hamiltonian cycles corresponding to every possible assignment of the variables"))
 
@@ -181,9 +181,9 @@ def get_reductions():
         PROBLEMS["3COL"], PROBLEMS["CLIQUE"], description="3COL -> SAT -> CLIQUE"))
     reductions.append(Reduction(PROBLEMS["3COL"], PROBLEMS["SAT"], description="For each vertex u in G, create 3 variables Ru Gu Bu , each represents the color of the vertex u (if u is red <=> Ru = 1, else Ru = 0), for each vertex create clauses (Ru or Gu or Bu) and (not Ru or not Gu) and (not Ru or not Bu) and (not Gu or not Bu) this ensures that u has exactly 1 color, then for each edge (u, v) create clauses (not Ru or not Rv) and (not Gu or not Gv) and (not Bu or not Bv) this ensures that u and v have different colors"))
     reductions.append(Reduction(
-        PROBLEMS["3COL"], PROBLEMS["IS"], description="3COL -> SAT -> 3SAT -> IS"))
+        PROBLEMS["3COL"], PROBLEMS["IS"], description="For each vertex Vi, create a clique of 3 nodes Vi1 Vi2 Vi3, without loss of generality Vi1 is left, Vi2 is top, Vi3 is right, then for each edge (Vi, Vj) connect Vi1 to Vj1, Vi2 to Vj2, Vi3 to Vj3, set K = n (number of verticies), Vi1 corresponds to picking color 1, Vi2 corresponds to picking color 2, Vi3 corresponds to picking color 3, we are sure that since node Vi and Vj are connected then they will not have same color"))
     reductions.append(Reduction(
-        PROBLEMS["3COL"], PROBLEMS["VC"], description="3COL -> SAT -> 3SAT -> VC"))
+        PROBLEMS["3COL"], PROBLEMS["VC"], description="3COL -> IS -> VC"))
     # =================================================================================================
 
     reductions.append(Reduction(
